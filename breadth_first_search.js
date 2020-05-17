@@ -1,16 +1,15 @@
 let map = [
-    ["s","#"," "," "," ","#"," "],
-    [" ","#"," ","#","e"," "," "],
-    [" ","#"," ","#","#"," ","#"], 
-    [" "," "," ","#"," "," ","#"],
-    [" ","#"," ","#","#"," ","#"],
-    [" ","#"," ","#"," "," ","#"],
-    [" ","#"," "," "," "," ","#"]
+    ["s","#"," "," "," "," ","#"],
+    [" ","#"," ","#","#"," "," "],
+    [" ","#"," ","#"," "," "," "], 
+    [" ","#"," ","#"," ","#"," "],
+    [" "," "," ","#"," ","#","#"],
+    [" ","#"," ","#"," ","#","#"],
+    [" ","#"," "," "," "," ","e"]
 ]
 
-const Node = function(location, prev_node = null,neightbors = null ){
+const Node = function(location, prev_node = null){
     this.location = location
-    this.neightbors = neightbors
     this.prev_node = prev_node 
 }
 
@@ -91,10 +90,11 @@ const BFS = function(rootLocation,map){
         for(let i = 0 ; i < this.path.length; i ++){ 
             let x = this.path[i][0]
             let y = this.path[i][1]
-            this.map[y][x] = "."
+            let mark = i === 0 ? "E" : i === this.path.length - 1 ? "S" : "."
+            this.map[y][x] = mark
         }
 
-        for(let i = 0 ; i < this.map.length; i ++) {
+        for(let i = 0 ; i < this.map.length; i ++) { 
             console.log(this.map[i].join(" "))
         }
     }
