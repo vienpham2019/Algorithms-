@@ -194,6 +194,7 @@ const draw_maze = () => {
         myReq = requestAnimationFrame(draw_maze)
     // }, 100);
     c.clearRect(0,0,canvas.width, canvas.height)
+
     for(let i = 0; i < nodes.length; i ++){
         nodes[i].draw()
     }
@@ -208,7 +209,6 @@ const draw_maze = () => {
         if(end_node.prev_node){
             find_path()
         }else if(finish_path){
-            console.log("end")
             cancelAnimationFrame(myReq)
         }else{
             solve_maze()
@@ -309,6 +309,4 @@ const find_path = () => {
     current_node = current_node.prev_node
 }
 
-setUp()
-
-console.log(nodes)
+// setUp()
