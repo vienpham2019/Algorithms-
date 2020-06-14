@@ -1,8 +1,8 @@
-let size = 30 
+let size = 40 
 // let width = size * 70
 // let height = size * 40
-let width = size * 60
-let height = size * 30
+let width = size * 35
+let height = size * 20
 let canvas = document.getElementById("maze")
 let button = document.getElementById('solve_maze_btn')
 canvas.width = width
@@ -223,6 +223,11 @@ const draw_maze = (nodes_array , x_max, y_max, x_min , y_min) => {
                 ){
                 if (nodes_array[i].y != random_y * size + (size / 2)){
                     nodes_array[i].walls[1] = true
+                    let {x , y} = nodes_array[i]
+                    let neightbor_node = nodes_array.find(node => node.x === x + size && node.y === y) 
+                    if(neightbor_node){
+                        neightbor_node.walls[3] = true
+                    } 
                 }
             }
         }else{
@@ -233,6 +238,11 @@ const draw_maze = (nodes_array , x_max, y_max, x_min , y_min) => {
                 ){
                 if(nodes_array[i].x != random_x * size + (size / 2)){
                     nodes_array[i].walls[2] = true
+                    let {x , y} = nodes_array[i]
+                    let neightbor_node = nodes_array.find(node => node.x === x && node.y === y + size) 
+                    if(neightbor_node){
+                        neightbor_node.walls[0] = true
+                    } 
                 }
             }
         }
@@ -291,10 +301,10 @@ const check_neighbor_node = (node) => {
     let x = node.x
     let y = node.y
     let color = "MidnightBlue"
-    let current__find_node = nodes.find(c_n => c_n.x === node.x && c_n.y === node.y )
+    let current_find_node = nodes.find(c_n => c_n.x === node.x && c_n.y === node.y )
     // top 
     let top = nodes.find(n => n.x === x && n.y === y - size)
-    if(top && !current__find_node.walls[0] && !nodes_path.find(n => n.x === top.x && n.y === top.y)){
+    if(top && !current_find_node.walls[0] && !nodes_path.find(n => n.x === top.x && n.y === top.y)){
         let top_x = top.x
         let top_y = top.y
         if(top_x === end_node.x && top_y === end_node.y){
@@ -310,7 +320,7 @@ const check_neighbor_node = (node) => {
 
     // right
     let right = nodes.find(n => n.x === x + size && n.y === y )
-    if(right && !current__find_node.walls[1] && !nodes_path.find(n => n.x === right.x  && n.y === right.y)){
+    if(right && !current_find_node.walls[1] && !nodes_path.find(n => n.x === right.x  && n.y === right.y)){
         let right_x = right.x 
         let right_y = right.y 
         if(right_x === end_node.x && right_y === end_node.y){
@@ -326,7 +336,7 @@ const check_neighbor_node = (node) => {
 
     // bottom
     let bottom = nodes.find(n => n.x === x && n.y === y + size ) 
-    if(bottom && !current__find_node.walls[2] && !nodes_path.find(n => n.x === bottom.x  && n.y === bottom.y )){
+    if(bottom && !current_find_node.walls[2] && !nodes_path.find(n => n.x === bottom.x  && n.y === bottom.y )){
         let bottom_x = bottom.x 
         let bottom_y = bottom.y 
         if(bottom_x === end_node.x && bottom_y === end_node.y){
@@ -342,7 +352,7 @@ const check_neighbor_node = (node) => {
 
     // left 
     let left = nodes.find(n => n.x === x - size && n.y === y)
-    if(left && !current__find_node.walls[3] && !nodes_path.find(n => n.x === left.x && n.y === left.y)){
+    if(left && !current_find_node.walls[3] && !nodes_path.find(n => n.x === left.x && n.y === left.y)){
         let left_x = left.x 
         let left_y = left.y 
         if(left_x === end_node.x && left_y === end_node.y){
