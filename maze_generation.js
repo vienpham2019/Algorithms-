@@ -309,4 +309,4 @@ const find_path = () => {
     current_node = current_node.prev_node
 }
 
-// setUp()
+setUp()

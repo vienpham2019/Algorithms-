@@ -1,8 +1,8 @@
-let size = 40 
+let size = 20 
 // let width = size * 70
 // let height = size * 40
-let width = size * 35
-let height = size * 20
+let width = size * 45
+let height = size * 40
 let canvas = document.getElementById("maze")
 canvas.width = width
 canvas.height = height
@@ -92,9 +92,16 @@ const setUp = () => {
             let x = j * size + (size / 2)
             let y = i * size + (size / 2)
             let node = new Node(x, y)
-            if(i === 0 && j === 0){
-                stack.push(node)
-                visited_nodes.push(node)
+            if(i === 0 && j != 0) {
+                node.walls[0] = true
+            }else if(i === rows - 1){
+                node.walls[2] = true
+            }
+
+            if(j === 0){
+                node.walls[3] = true 
+            }else if(j === cols - 1 && i != rows - 1){
+                node.walls[1] = true
             }
             nodes.push(node)
         }
@@ -106,21 +113,21 @@ const setUp = () => {
     draw_maze(nodes , cols, rows, 0, 0)
 }
 
-const draw_maze = (nodes_array , w, h, x_min , y_min) => {
+const draw_maze = (nodes_array , x_max, y_max, x_min , y_min) => {
 
-    if(w <= 1 || h <= 1) return 
+    if(x_max - x_min < 1 || y_max - y_min < 1) return 
 
-    let random_x = getRandom(x_min,w)
-    let random_y = getRandom(y_min,h)
-    let x_or_y = getRandom(-1, 2)
-    console.log(random_x , random_y , w)
+    let random_x = getRandom(x_min,x_max)
+    let random_y = getRandom(y_min,y_max)
+    let x_or_y = getRandom(-20, 20)
     
     for(let i = 0; i < nodes_array.length; i ++){
         if(x_or_y > 0) { // x
             if (
                 nodes_array[i].x === random_x * size + (size / 2) 
-                && nodes_array[i].y <= h * size + (size / 2)
+                && nodes_array[i].y <= y_max * size + (size / 2)
                 && nodes_array[i].y >= y_min * size + (size / 2)
+                && nodes_array[i].x != (cols - 1) * size + (size / 2)
                 ){
                 nodes_array[i].walls[1] = true
                 if (nodes_array[i].y === random_y * size + (size / 2)){
@@ -130,7 +137,7 @@ const draw_maze = (nodes_array , w, h, x_min , y_min) => {
         }else{
             if(
                 nodes_array[i].y === random_y * size + (size / 2)
-                && nodes_array[i].x <= w * size + (size / 2)
+                && nodes_array[i].x <= x_max * size + (size / 2)
                 && nodes_array[i].x >= x_min * size + (size / 2)
                 ){
                 nodes_array[i].walls[2] = true
@@ -142,13 +149,15 @@ const draw_maze = (nodes_array , w, h, x_min , y_min) => {
         nodes_array[i].draw()
     }
 
-    if(x_or_y > 0){ // right and left 
-        // draw_maze(nodes_array, random_x, h , 0, 0)
-        draw_maze(nodes_array, w , h, random_x, y_min)
-    }else{ // top 
-        draw_maze(nodes_array, w, random_y, 0, 0)
-    }
-    
+    setTimeout(() => {
+        if(x_or_y > 0){ 
+            draw_maze(nodes_array, random_x, y_max, x_min, y_min) // right 
+            draw_maze(nodes_array, x_max, y_max, random_x + 1, y_min) // left 
+        }else{
+            draw_maze(nodes_array, x_max, random_y, x_min, y_min) // top 
+            draw_maze(nodes_array, x_max, y_max, x_min , random_y + 1) // bottom
+        }
+    }, 100);
 }
 
 const getRandom = (min,max) => {
