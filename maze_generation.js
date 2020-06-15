@@ -190,9 +190,7 @@ const setUp = () => {
 
 
 const draw_maze = () => {
-    // setTimeout(() => {
-        myReq = requestAnimationFrame(draw_maze)
-    // }, 100);
+    myReq = requestAnimationFrame(draw_maze)
     c.clearRect(0,0,canvas.width, canvas.height)
 
     for(let i = 0; i < nodes.length; i ++){

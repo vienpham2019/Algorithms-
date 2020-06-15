@@ -1,4 +1,5 @@
 let size = 30 
+let delay = 40
 // let width = size * 70
 // let height = size * 40
 let width = size * 60
@@ -101,72 +102,6 @@ const Block = function(x , y , color = "red", prev_node = null){
         c.fillStyle = this.color
         c.fill()
     }
-
-    this.move = () => {
-        let current_node = stack[0]
-        let neighbor_nodes = []
-        let x = current_node.x
-        let y = current_node.y
-
-        // top
-        if(y - size > 0 && !visited_nodes.find(n => n.x === x && n.y === y - size)){
-            let top = nodes.find(n => n.x === x && n.y === y - size)
-            neighbor_nodes.push(top)
-        }
-
-        // right 
-        if(x + size < width && !visited_nodes.find(n => n.x === x + size && n.y === y)){
-            let right = nodes.find(n => n.x === x + size && n.y === y)
-            neighbor_nodes.push(right)
-        }
-
-        // bottom
-        if(y + size < height && !visited_nodes.find(n => n.x === x && n.y === y + size)){
-            let bottom = nodes.find(n => n.x === x && n.y === y + size)
-            neighbor_nodes.push(bottom)
-        }
-
-        // left
-        if(x - size > 0 && !visited_nodes.find(n => n.x === x - size && n.y === y)){
-            let left = nodes.find(n => n.x === x - size && n.y === y)
-            neighbor_nodes.push(left)
-        }
-
-        if(neighbor_nodes.length > 0){
-            let next_node = neighbor_nodes[Math.floor(Math.random() * neighbor_nodes.length)]
-            stack.unshift(next_node)
-            visited_nodes.push(next_node)
-            this.dx = next_node.x - current_node.x
-            this.dy = next_node.y - current_node.y
-
-            this.x += this.dx 
-            this.y += this.dy
-
-            if(this.dx > 0) { // right 
-                current_node.walls[1] = false 
-                next_node.walls[3] = false 
-            }else if(this.dx < 0){ // left
-                current_node.walls[3] = false 
-                next_node.walls[1] = false 
-            } 
-
-            if(this.dy > 0) { // down
-                current_node.walls[2] = false 
-                next_node.walls[0] = false 
-            }else if(this.dy < 0){ // up
-                current_node.walls[0] = false 
-                next_node.walls[2] = false 
-            }
-        }else{
-            let dx = current_node.x  - (this.x + (size / 2))
-            let dy = current_node.y  - (this.y + (size / 2))
-            this.x += dx 
-            this.y += dy
-            stack.shift()
-        }
-        this.draw()
-    }
-
 }
 
 const setUp = () => {
@@ -251,13 +186,21 @@ const draw_maze = (nodes_array , x_max, y_max, x_min , y_min) => {
 
     setTimeout(() => {
         if(x_or_y > 0){ 
-            draw_maze(nodes_array, random_x, y_max, x_min, y_min) // right 
-            draw_maze(nodes_array, x_max, y_max, random_x + 1, y_min) // left 
+            setTimeout(() => {
+                draw_maze(nodes_array, random_x, y_max, x_min, y_min) // right 
+            }, delay * 2);
+            setTimeout(() => {
+                draw_maze(nodes_array, x_max, y_max, random_x + 1, y_min) // left 
+            }, delay * 3);
         }else{
-            draw_maze(nodes_array, x_max, random_y, x_min, y_min) // top 
-            draw_maze(nodes_array, x_max, y_max, x_min , random_y + 1) // bottom
+            setTimeout(() => {
+                draw_maze(nodes_array, x_max, random_y, x_min, y_min) // top 
+            }, delay * 2);
+            setTimeout(() => {
+                draw_maze(nodes_array, x_max, y_max, x_min , random_y + 1) // bottom
+            }, delay * 3);
         }
-    }, 10);
+    }, delay * 2);
 }
 
 const run_solve_maze = () => {
