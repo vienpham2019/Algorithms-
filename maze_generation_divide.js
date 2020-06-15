@@ -1,8 +1,8 @@
-let size = 40 
+let size = 30 
 // let width = size * 70
 // let height = size * 40
-let width = size * 35
-let height = size * 20
+let width = size * 60
+let height = size * 30
 let canvas = document.getElementById("maze")
 let button = document.getElementById('solve_maze_btn')
 canvas.width = width
@@ -257,7 +257,7 @@ const draw_maze = (nodes_array , x_max, y_max, x_min , y_min) => {
             draw_maze(nodes_array, x_max, random_y, x_min, y_min) // top 
             draw_maze(nodes_array, x_max, y_max, x_min , random_y + 1) // bottom
         }
-    }, 100);
+    }, 10);
 }
 
 const run_solve_maze = () => {
